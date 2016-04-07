@@ -1,0 +1,44 @@
+---
+
+- name: Install nginx.
+  homebrew:
+    name: nginx
+    state: present
+
+- name: Create nginx folders.
+  file: 
+    path: /var/cache
+    group: admin
+    state: directory
+  become: yes
+
+- name: Create nginx folders.
+  file: 
+    path: "{{ item }}"
+    group: admin
+    state: directory
+  with_items:
+    - /var/cache
+    - /usr/local/etc/nginx/conf.d
+    - /usr/local/etc/nginx/logs
+    - /usr/local/etc/nginx/ssl
+    - /usr/local/etc/nginx/sites
+
+- name: Copy nginx.conf.
+  copy:
+    src: ./files/nginx.conf
+    dest: /usr/local/etc/nginx/nginx.conf
+    group: admin
+
+- name: Copy nginx plist to Launchdeamons folder.
+  copy:
+    src: /usr/local/opt/nginx/homebrew.mxcl.nginx.plist
+    dest: /Library/LaunchDaemons
+    force: no
+    group: admin
+  become: yes
+  notify: Restart nginx.
+
+- name: Restart nginx.
+  shell: brew services restart nginx
+  become: yes
