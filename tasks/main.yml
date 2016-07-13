@@ -5,15 +5,15 @@
     name: nginx
     state: present
 
-- name: Create nginx folders.
-  file: 
-    path: /var/cache
-    group: admin
-    state: directory
-  become: yes
+# - name: Create nginx cache folder.
+#   file:
+#     path: /var/cache
+#     group: admin
+#     state: directory
+#   become: yes
 
 - name: Create nginx folders.
-  file: 
+  file:
     path: "{{ item }}"
     group: admin
     state: directory
@@ -38,6 +38,15 @@
     group: admin
   become: yes
   notify: Restart nginx.
+
+- name: Give proper ownership to fastcgi_temp folder.
+  file:
+    path: /usr/local/var/run/nginx/fastcgi_temp
+    owner: nobody
+    group: admin
+    recurse: yes
+    state: directory
+  become: yes
 
 - name: Restart nginx.
   shell: brew services restart nginx
