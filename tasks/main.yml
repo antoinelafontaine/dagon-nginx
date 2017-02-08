@@ -5,13 +5,6 @@
     name: nginx
     state: present
 
-# - name: Create nginx cache folder.
-#   file:
-#     path: /var/cache
-#     group: admin
-#     state: directory
-#   become: yes
-
 - name: Create nginx folders.
   file:
     path: "{{ item }}"
@@ -37,7 +30,6 @@
     force: no
     group: admin
   become: yes
-  notify: Restart nginx.
 
 - name: Give proper ownership to fastcgi_temp folder.
   file:
