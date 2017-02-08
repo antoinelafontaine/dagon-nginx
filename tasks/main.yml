@@ -43,7 +43,7 @@
   file:
     path: /usr/local/var/run/nginx/fastcgi_temp
     owner: nobody
-    group: admin
+    group: nobody
     recurse: yes
     state: directory
   become: yes
