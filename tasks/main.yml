@@ -42,5 +42,5 @@
   become: yes
 
 - name: Restart nginx.
-  shell: sudo nginx -s reload
+  shell: nginx -s reload
   become: yes
